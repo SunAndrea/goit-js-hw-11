@@ -10,10 +10,11 @@ const galleryEl = document.querySelector('.gallery');
 const formEl = document.querySelector('.search-form');
 let simpleLightBox = new SimpleLightbox('.gallery a');
 
-let page = 1;
+let page;
 
 async function onSearchFormSubmit(evt) {
   evt.preventDefault();
+  page = 1;
   galleryEl.innerHTML = '';
 
   const query = inputEl.value.trim();
