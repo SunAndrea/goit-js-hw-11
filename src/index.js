@@ -4,17 +4,13 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 
-const btnSearchEl = document.querySelector('.btn-search');
 const btnMoreEl = document.querySelector('.load-more');
 const inputEl = document.querySelector('input');
 const galleryEl = document.querySelector('.gallery');
 const formEl = document.querySelector('.search-form');
+let simpleLightBox = new SimpleLightbox('.gallery a');
 
 let page = 1;
-
-const lightbox = new SimpleLightbox('.gallery a', {
-  scrollZoomFactor: 0.1,
-});
 
 async function onSearchFormSubmit(evt) {
   evt.preventDefault();
@@ -32,9 +28,10 @@ async function onSearchFormSubmit(evt) {
 
     Notiflix.Notify.success('Hooray! We found' + ` ${data.total} ` + 'images.');
 
-    console.log(data);
-
     galleryEl.insertAdjacentHTML('beforeend', galleryCardTemplate(data.hits));
+
+    simpleLightBox.refresh();
+
     btnMoreEl.classList.remove('is-hidden');
   } catch (error) {
     console.warn(error);
@@ -43,7 +40,7 @@ async function onSearchFormSubmit(evt) {
 
 async function onLoadMoreBtn(evt) {
   evt.preventDefault();
-  lightbox.refresh();
+
   page += 1;
   let items = 40;
   const query = inputEl.value.trim();
@@ -58,8 +55,9 @@ async function onLoadMoreBtn(evt) {
       );
     }
 
-    console.log(data);
     galleryEl.insertAdjacentHTML('beforeend', galleryCardTemplate(data.hits));
+
+    simpleLightBox.refresh();
   } catch (error) {
     console.log(error);
   }
